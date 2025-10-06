@@ -6,6 +6,8 @@ namespace SpatialPartitionPattern
     //The soldier base class for enemies and friendly
     public class Soldier
     {
+        public Soldier target;
+
         //To change material
         public MeshRenderer soldierMeshRenderer;
         //To move the soldier

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 namespace SpatialPartitionPattern
 {
@@ -105,6 +106,18 @@ namespace SpatialPartitionPattern
             //For each friendly, find the closest enemy and change its color and chase it
             for (int i = 0; i < friendlySoldiers.Count; i++)
             {
+                //infect target
+                Soldier friendly = friendlySoldiers[i];
+                if (friendly.target != null)
+                {
+                    float distSqr = (friendly.soldierTrans.position - friendly.target.soldierTrans.position).sqrMagnitude;
+                    float infectionRange = 0.5f;
+                    if (distSqr <= infectionRange)
+                    {
+                        InfectEnemy(friendly.target);
+                    }
+                }
+
                 Soldier closestEnemy;
 
                 //The fast version with spatial partition
@@ -170,6 +183,20 @@ namespace SpatialPartitionPattern
                 toggleText.SetText("ON");
             else
                 toggleText.SetText("OFF");
+        }
+
+
+        void InfectEnemy(Soldier enemy)
+        {
+            enemySoldiers.Remove(enemy);
+
+            enemy.soldierTrans.gameObject.SetActive(false);
+
+
+            /*Friendly newFriendly = new Friendly(enemy.soldierTrans.gameObject, mapWidth);
+
+            friendlySoldiers.Add(newFriendly);
+            enemy = null;*/
         }
     }
 }
